@@ -49,10 +49,10 @@ func CheckUserEmailRepeat(email string) error {
 }
 
 func CreateUser(name string, email string, password_origin string) (user *models.User, err error) {
-	if len(password_origin) < 6 {
-		err = EPasswordInvalid
-		return
-	}
+	// if len(password_origin) < 6 {
+	// 	err = EPasswordInvalid
+	// 	return
+	// }
 	password, err := bcrypt.GenerateFromPassword([]byte(password_origin), bcrypt.DefaultCost)
 	if err != nil {
 		err = EPasswordInvalid
