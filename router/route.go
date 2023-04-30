@@ -69,6 +69,8 @@ func singleRoute(r *gin.RouterGroup) *gin.RouterGroup {
 }
 
 func InitRoute(r *gin.Engine) *gin.Engine {
+	r.Use(middle.CorsMiddle())
+
 	api := r.Group("/api")
 	s := api.Group("/s")
 	s = singleRoute(s)
