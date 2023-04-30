@@ -30,7 +30,7 @@ func CheckUserNameRepeat(name string) error {
 	if result.Error != nil {
 		return EQueryFailed
 	}
-	if result.RowsAffected == 0 {
+	if result.RowsAffected != 0 {
 		return EHadExist
 	}
 	return nil
@@ -42,7 +42,7 @@ func CheckUserEmailRepeat(email string) error {
 	if result.Error != nil {
 		return EQueryFailed
 	}
-	if result.RowsAffected == 0 {
+	if result.RowsAffected != 0 {
 		return EHadExist
 	}
 	return nil

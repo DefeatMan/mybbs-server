@@ -29,7 +29,7 @@ func UserRegister(ctx *gin.Context) {
 	}
 	_, err := dao.CreateUser(urform.Name, urform.Email, urform.Password)
 	if err != nil {
-		response.ResponseErrorWithMsg(ctx, response.CodeUnknownError, "user register failed")
+		response.ResponseErrorWithMsg(ctx, response.CodeUnknownError, "user register failed: "+err.Error())
 		return
 	}
 	response.ResponseSuccess(ctx, nil)
