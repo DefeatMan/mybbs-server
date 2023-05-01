@@ -123,7 +123,7 @@ func DeleteComment(ctx *gin.Context) {
 		response.ResponseErrorWithMsg(ctx, response.CodeInvalidParams, "comment param error")
 		return
 	}
-	err = dao.DeleteComment(uint(commentId), egoId.(uint), adminPerm)
+	err = dao.DeleteComment(uint(commentId), egoId.(uint), adminPerm & models.CommentPermFlag)
 	if err != nil {
 		response.ResponseErrorWithMsg(ctx, response.CodeUnknownError, "comment delete failed")
 		return

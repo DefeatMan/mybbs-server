@@ -86,7 +86,7 @@ func LockPost(ctx *gin.Context) {
 		response.ResponseErrorWithMsg(ctx, response.CodeInvalidParams, "?post= param error")
 		return
 	}
-	err = dao.LockPost(uint(postId), egoId.(uint), adminPerm)
+	err = dao.LockPost(uint(postId), egoId.(uint), adminPerm & models.PostPermFlag)
 	if err != nil {
 		response.ResponseErrorWithMsg(ctx, response.CodeUnknownError, "post lock failed")
 		return
@@ -112,7 +112,7 @@ func DeletePost(ctx *gin.Context) {
 		response.ResponseErrorWithMsg(ctx, response.CodeInvalidParams, "?post= param error")
 		return
 	}
-	err = dao.DeletePost(uint(postId), egoId.(uint), adminPerm)
+	err = dao.DeletePost(uint(postId), egoId.(uint), adminPerm & models.PostPermFlag)
 	if err != nil {
 		response.ResponseErrorWithMsg(ctx, response.CodeUnknownError, "post delete failed")
 		return
