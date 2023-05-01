@@ -26,6 +26,6 @@ type Comment struct {
 // post form
 
 type CommentAppendForm struct {
-    CommentId uint `json:"commentid" binding:"required"`
-    Content string `json:"content" binding:"required"`
+	CommentId uint   `json:"commentid" binding:"required"`
+	Content   string `json:"content" binding:"required"`
 }

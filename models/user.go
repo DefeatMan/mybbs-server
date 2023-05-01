@@ -21,23 +21,23 @@ type User struct {
 
 type UserStarPost struct {
 	ID        uint      `gorm:"primaryKey"`
-	CreatedAt time.Time `gorm:"index:,desc"`
-    UserId    uint      `gorm:"not null;uniqueIndex:idx_userid_star_postid,priority:8" json:"userid" binding:"required"`
-    PostId    uint      `gorm:"not null;uniqueIndex:idx_userid_star_postid,priority:10" json:"postid" binding:"required"`
+	CreatedAt time.Time `gorm:"index:idx_userid_createtime,priority:10,desc"`
+	UserId    uint      `gorm:"not null;uniqueIndex:idx_userid_star_postid,priority:8;index:idx_userid_createtime,priority:8" json:"userid" binding:"required"`
+	PostId    uint      `gorm:"not null;uniqueIndex:idx_userid_star_postid,priority:10" json:"postid" binding:"required"`
 }
 
 type UserStarComment struct {
 	ID        uint      `gorm:"primaryKey"`
-	CreatedAt time.Time `gorm:"index:,desc"`
-    UserId    uint      `gorm:"not null;uniqueIndex:idx_userid_star_commentid,priority:8" json:"userid" binding:"required"`
-    CommentId uint      `gorm:"not null;uniqueIndex:idx_userid_star_commentid,priority:10" json:"commentid" binding:"required"`
+	CreatedAt time.Time `gorm:"index:idx_userid_createtime,priority:10,desc"`
+	UserId    uint      `gorm:"not null;uniqueIndex:idx_userid_star_commentid,priority:8;index:idx_userid_createtime,priority:8" json:"userid" binding:"required"`
+	CommentId uint      `gorm:"not null;uniqueIndex:idx_userid_star_commentid,priority:10" json:"commentid" binding:"required"`
 }
 
 type UserAgreeComment struct {
 	ID        uint      `gorm:"primaryKey"`
-	CreatedAt time.Time `gorm:"index:,desc"`
-    UserId    uint      `gorm:"not null;uniqueIndex:idx_userid_agree_commentid,priority:8" json:"userid" binding:"required"`
-    CommentId uint      `gorm:"not null;uniqueIndex:idx_userid_agree_commentid,priority:10" json:"commentid" binding:"required"`
+	CreatedAt time.Time `gorm:"index:idx_userid_createtime,priority:10,desc"`
+	UserId    uint      `gorm:"not null;uniqueIndex:idx_userid_agree_commentid,priority:8;index:idx_userid_createtime,priority:8" json:"userid" binding:"required"`
+	CommentId uint      `gorm:"not null;uniqueIndex:idx_userid_agree_commentid,priority:10" json:"commentid" binding:"required"`
 }
 
 // post form
