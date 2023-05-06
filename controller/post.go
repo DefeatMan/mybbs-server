@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"kome/mybbs-server/dao"
 	"kome/mybbs-server/logic"
 	"kome/mybbs-server/models"
@@ -26,6 +27,7 @@ func QueryPostbyId(ctx *gin.Context) {
 		return
 	}
 	var star int64 = 0
+    fmt.Println(exist)
 	if exist {
 		star, err = dao.StarPostCheck(egoId.(uint), uint(postId))
 	}

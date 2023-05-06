@@ -4,16 +4,12 @@ import (
 	"kome/mybbs-server/models"
 
 	"gorm.io/gorm"
-//	"gorm.io/gorm/clause"
+	// "gorm.io/gorm/clause"
 )
 
 func StarPostCheck(userId uint, postId uint) (count int64, err error) {
 	db := GetDatabase()
-	result := db.Model(&models.UserStarPost{}).Where("user_id = ? AND post_id = ?", userId, postId).Limit(1).Count(&count)
-	if result.Error != nil {
-		err = EQueryFailed
-		return
-	}
+	_ = db.Model(&models.UserStarPost{}).Where("user_id = ? AND post_id = ?", userId, postId).Limit(1).Count(&count)
 	return
 }
 

@@ -38,7 +38,7 @@ func userStarRoute(r *gin.RouterGroup) *gin.RouterGroup {
 	r.POST("/comment/:cid", middle.NeedEgoMiddle(), controller.ClickStarComment)
 	r.GET("/post", middle.NeedEgoMiddle(), controller.QueryStarPost)
 	r.GET("/comment", middle.NeedEgoMiddle(), controller.QueryStarComment)
-    
+
 	return r
 }
 
@@ -49,21 +49,21 @@ func userAgreeRoute(r *gin.RouterGroup) *gin.RouterGroup {
 }
 
 func queryRoute(r *gin.RouterGroup) *gin.RouterGroup {
-	r.GET("/category", controller.QueryCategoryList)
-	r.GET("/category/:cid", controller.QueryPostList)
-	r.GET("/category/:cid/star", controller.QueryPostListStar)
-	r.GET("/post/:pid", controller.QueryCommentList)
-	r.GET("/post/:pid/agree", controller.QueryCommentListAgree)
+	r.GET("/category", middle.EgoMiddle(), controller.QueryCategoryList)
+	r.GET("/category/:cid", middle.EgoMiddle(), controller.QueryPostList)
+	r.GET("/category/:cid/star", middle.EgoMiddle(), controller.QueryPostListStar)
+	r.GET("/post/:pid", middle.EgoMiddle(), controller.QueryCommentList)
+	r.GET("/post/:pid/agree", middle.EgoMiddle(), controller.QueryCommentListAgree)
 
 	return r
 }
 
 func singleRoute(r *gin.RouterGroup) *gin.RouterGroup {
-	r.GET("/user/:id", controller.QueryUserbyId)
-    r.GET("/category/:cid", controller.QueryCategorybyId)
-	r.GET("/post/:pid", controller.QueryPostbyId)
-    r.GET("/comment/:cid", controller.QueryCommentbyId)
-	r.GET("/comment/:cid/related", controller.QueryCommentRelated)
+	r.GET("/user/:id", middle.EgoMiddle(), controller.QueryUserbyId)
+	r.GET("/category/:cid", middle.EgoMiddle(), controller.QueryCategorybyId)
+	r.GET("/post/:pid", middle.EgoMiddle(), controller.QueryPostbyId)
+	r.GET("/comment/:cid", middle.EgoMiddle(), controller.QueryCommentbyId)
+	r.GET("/comment/:cid/related", middle.EgoMiddle(), controller.QueryCommentRelated)
 
 	return r
 }
@@ -74,7 +74,7 @@ func InitRoute(r *gin.Engine) *gin.Engine {
 	api := r.Group("/api")
 	s := api.Group("/s")
 	s = singleRoute(s)
-    star := api.Group("/star")
+	star := api.Group("/star")
 	star = userStarRoute(star)
 	agree := api.Group("/agree")
 	agree = userAgreeRoute(agree)
