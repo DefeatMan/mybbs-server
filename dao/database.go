@@ -2,9 +2,9 @@ package dao
 
 import (
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"kome/mybbs-server/models"
 	"log"
-    "golang.org/x/crypto/bcrypt"
 
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
@@ -51,10 +51,10 @@ func InitAdmin() {
 	name, email, password_origin := getRoot()
 	db := GetDatabase()
 	db.Transaction(func(tx *gorm.DB) error {
-        password, err := bcrypt.GenerateFromPassword([]byte(password_origin), bcrypt.DefaultCost)
-        if err != nil {
-        	return EPasswordInvalid
-        }
+		password, err := bcrypt.GenerateFromPassword([]byte(password_origin), bcrypt.DefaultCost)
+		if err != nil {
+			return EPasswordInvalid
+		}
 
 		init_user := models.User{
 			Name: name, Email: email, Password: string(password),

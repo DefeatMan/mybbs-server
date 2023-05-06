@@ -4,7 +4,7 @@ import (
 	"kome/mybbs-server/models"
 
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
+//	"gorm.io/gorm/clause"
 )
 
 func StarPostCheck(userId uint, postId uint) (count int64, err error) {
@@ -54,13 +54,21 @@ func ClickStarPost(userId uint, postId uint) (star_count uint, now_state uint, e
 			if tx.Create(user_star_post).Error != nil {
 				return ECreateFailed
 			}
-			var tmp_post []models.Post
-			result := tx.Model(&tmp_post).Clauses(clause.Returning{Columns: []clause.Column{{Name: "star_num"}, {Name: "user_id"}}}).Where("id = ?", postId).UpdateColumn("star_num", gorm.Expr("star_num + ?", 1))
+			//var tmp_post []models.Post
+			//result := tx.Model(&tmp_post).Clauses(clause.Returning{Columns: []clause.Column{{Name: "star_num"}, {Name: "user_id"}}}).Where("id = ?", postId).UpdateColumn("star_num", gorm.Expr("star_num + ?", 1))
+			result := tx.Model(&models.Post{}).Where("id = ?", postId).UpdateColumn("star_num", gorm.Expr("star_num + ?", 1))
 			if result.Error != nil || result.RowsAffected == 0 {
 				return EUpdateFailed
 			}
-			star_count = tmp_post[0].StarNum
-			result = tx.Model(&models.User{}).Where("id = ?", tmp_post[0].UserId).UpdateColumn("star_num", gorm.Expr("star_num + ?", 1))
+			var tmp_post models.Post
+			result = tx.First(&tmp_post, postId)
+			if result.Error != nil {
+				return EUpdateFailed
+			}
+			//star_count = tmp_post[0].StarNum
+			//result = tx.Model(&models.User{}).Where("id = ?", tmp_post[0].UserId).UpdateColumn("star_num", gorm.Expr("star_num + ?", 1))
+			star_count = tmp_post.StarNum
+			result = tx.Model(&models.User{}).Where("id = ?", tmp_post.UserId).UpdateColumn("star_num", gorm.Expr("star_num + ?", 1))
 			if result.Error != nil {
 				return EUpdateFailed
 			}
@@ -73,13 +81,21 @@ func ClickStarPost(userId uint, postId uint) (star_count uint, now_state uint, e
 			if tx.Unscoped().Where("user_id = ? AND post_id = ?", userId, postId).Delete(&models.UserStarPost{}).Error != nil {
 				return EDeleteFailed
 			}
-			var tmp_post []models.Post
-			result := tx.Model(&tmp_post).Clauses(clause.Returning{Columns: []clause.Column{{Name: "star_num"}, {Name: "user_id"}}}).Where("id = ?", postId).UpdateColumn("star_num", gorm.Expr("star_num - ?", 1))
+			//var tmp_post []models.Post
+			//result := tx.Model(&tmp_post).Clauses(clause.Returning{Columns: []clause.Column{{Name: "star_num"}, {Name: "user_id"}}}).Where("id = ?", postId).UpdateColumn("star_num", gorm.Expr("star_num - ?", 1))
+			result := tx.Model(&models.Post{}).Where("id = ?", postId).UpdateColumn("star_num", gorm.Expr("star_num - ?", 1))
 			if result.Error != nil || result.RowsAffected == 0 {
 				return EUpdateFailed
 			}
-			star_count = tmp_post[0].StarNum
-			result = tx.Model(&models.User{}).Where("id = ?", tmp_post[0].UserId).UpdateColumn("star_num", gorm.Expr("star_num - ?", 1))
+			var tmp_post models.Post
+			result = tx.First(&tmp_post, postId)
+			if result.Error != nil {
+				return EUpdateFailed
+			}
+			//star_count = tmp_post[0].StarNum
+			//result = tx.Model(&models.User{}).Where("id = ?", tmp_post[0].UserId).UpdateColumn("star_num", gorm.Expr("star_num - ?", 1))
+			star_count = tmp_post.StarNum
+			result = tx.Model(&models.User{}).Where("id = ?", tmp_post.UserId).UpdateColumn("star_num", gorm.Expr("star_num - ?", 1))
 			if result.Error != nil {
 				return EUpdateFailed
 			}
@@ -107,13 +123,21 @@ func ClickStarComment(userId uint, commentId uint) (star_count uint, now_state u
 			if tx.Create(user_star_comment).Error != nil {
 				return ECreateFailed
 			}
-			var tmp_comment []models.Comment
-			result := tx.Model(&tmp_comment).Clauses(clause.Returning{Columns: []clause.Column{{Name: "star_num"}, {Name: "user_id"}}}).Where("id = ?", commentId).UpdateColumn("star_num", gorm.Expr("star_num + ?", 1))
+			//var tmp_comment []models.Comment
+			//result := tx.Model(&tmp_comment).Clauses(clause.Returning{Columns: []clause.Column{{Name: "star_num"}, {Name: "user_id"}}}).Where("id = ?", commentId).UpdateColumn("star_num", gorm.Expr("star_num + ?", 1))
+			result := tx.Model(&models.Comment{}).Where("id = ?", commentId).UpdateColumn("star_num", gorm.Expr("star_num + ?", 1))
 			if result.Error != nil || result.RowsAffected == 0 {
 				return EUpdateFailed
 			}
-			star_count = tmp_comment[0].StarNum
-			result = tx.Model(&models.User{}).Where("id = ?", tmp_comment[0].UserId).UpdateColumn("star_num", gorm.Expr("star_num + ?", 1))
+			var tmp_comment models.Comment
+			result = tx.First(&tmp_comment, commentId)
+			if result.Error != nil {
+				return EUpdateFailed
+			}
+			//star_count = tmp_comment[0].StarNum
+			//result = tx.Model(&models.User{}).Where("id = ?", tmp_comment[0].UserId).UpdateColumn("star_num", gorm.Expr("star_num + ?", 1))
+			star_count = tmp_comment.StarNum
+			result = tx.Model(&models.User{}).Where("id = ?", tmp_comment.UserId).UpdateColumn("star_num", gorm.Expr("star_num + ?", 1))
 			if result.Error != nil {
 				return EUpdateFailed
 			}
@@ -126,13 +150,21 @@ func ClickStarComment(userId uint, commentId uint) (star_count uint, now_state u
 			if tx.Unscoped().Where("user_id = ? comment_id = ?", userId, commentId).Delete(&models.UserStarComment{}).Error != nil {
 				return EDeleteFailed
 			}
-			var tmp_comment []models.Comment
-			result := tx.Model(&tmp_comment).Clauses(clause.Returning{Columns: []clause.Column{{Name: "star_num"}, {Name: "user_id"}}}).Where("id = ?", commentId).UpdateColumn("star_num", gorm.Expr("star_num - ?", 1))
+			//var tmp_comment []models.Comment
+			//result := tx.Model(&tmp_comment).Clauses(clause.Returning{Columns: []clause.Column{{Name: "star_num"}, {Name: "user_id"}}}).Where("id = ?", commentId).UpdateColumn("star_num", gorm.Expr("star_num - ?", 1))
+			result := tx.Model(&models.Comment{}).Where("id = ?", commentId).UpdateColumn("star_num", gorm.Expr("star_num - ?", 1))
 			if result.Error != nil || result.RowsAffected == 0 {
 				return EUpdateFailed
 			}
-			star_count = tmp_comment[0].StarNum
-			result = tx.Model(&models.User{}).Where("id = ?", tmp_comment[0].UserId).UpdateColumn("star_num", gorm.Expr("star_num - ?", 1))
+			var tmp_comment models.Comment
+			result = tx.First(&tmp_comment, commentId)
+			if result.Error != nil {
+				return EUpdateFailed
+			}
+			//star_count = tmp_comment[0].StarNum
+			//result = tx.Model(&models.User{}).Where("id = ?", tmp_comment[0].UserId).UpdateColumn("star_num", gorm.Expr("star_num - ?", 1))
+			star_count = tmp_comment.StarNum
+			result = tx.Model(&models.User{}).Where("id = ?", tmp_comment.UserId).UpdateColumn("star_num", gorm.Expr("star_num - ?", 1))
 			if result.Error != nil {
 				return EUpdateFailed
 			}
@@ -160,13 +192,21 @@ func ClickAgreeComment(userId uint, commentId uint) (agree_count uint, now_state
 			if tx.Create(user_agree_comment).Error != nil {
 				return ECreateFailed
 			}
-			var tmp_comment []models.Comment
-			result := tx.Model(&tmp_comment).Clauses(clause.Returning{Columns: []clause.Column{{Name: "agree_num"}, {Name: "user_id"}}}).Where("id = ?", commentId).UpdateColumn("agree_num", gorm.Expr("agree_num + ?", 1))
+			//var tmp_comment []models.Comment
+			//result := tx.Model(&tmp_comment).Clauses(clause.Returning{Columns: []clause.Column{{Name: "agree_num"}, {Name: "user_id"}}}).Where("id = ?", commentId).UpdateColumn("agree_num", gorm.Expr("agree_num + ?", 1))
+			result := tx.Model(&models.Comment{}).Where("id = ?", commentId).UpdateColumn("agree_num", gorm.Expr("agree_num + ?", 1))
 			if result.Error != nil || result.RowsAffected == 0 {
 				return EUpdateFailed
 			}
-			agree_count = tmp_comment[0].AgreeNum
-			result = tx.Model(&models.User{}).Where("id = ?", tmp_comment[0].UserId).UpdateColumn("agree_num", gorm.Expr("agree_num + ?", 1))
+			var tmp_comment models.Comment
+			result = tx.First(&tmp_comment, commentId)
+			if result.Error != nil {
+				return EUpdateFailed
+			}
+			//agree_count = tmp_comment[0].AgreeNum
+			//result = tx.Model(&models.User{}).Where("id = ?", tmp_comment[0].UserId).UpdateColumn("agree_num", gorm.Expr("agree_num + ?", 1))
+			agree_count = tmp_comment.AgreeNum
+			result = tx.Model(&models.User{}).Where("id = ?", tmp_comment.UserId).UpdateColumn("agree_num", gorm.Expr("agree_num + ?", 1))
 			if result.Error != nil {
 				return EUpdateFailed
 			}
@@ -179,13 +219,21 @@ func ClickAgreeComment(userId uint, commentId uint) (agree_count uint, now_state
 			if tx.Unscoped().Where("user_id = ? AND comment_id = ?", userId, commentId).Delete(&models.UserAgreeComment{}).Error != nil {
 				return EDeleteFailed
 			}
-			var tmp_comment []models.Comment
-			result := tx.Model(&tmp_comment).Clauses(clause.Returning{Columns: []clause.Column{{Name: "agree_num"}, {Name: "user_id"}}}).Where("id = ?", commentId).UpdateColumn("agree_num", gorm.Expr("agree_num - ?", 1))
+			//var tmp_comment []models.Comment
+			//result := tx.Model(&tmp_comment).Clauses(clause.Returning{Columns: []clause.Column{{Name: "agree_num"}, {Name: "user_id"}}}).Where("id = ?", commentId).UpdateColumn("agree_num", gorm.Expr("agree_num - ?", 1))
+			result := tx.Model(&models.Comment{}).Where("id = ?", commentId).UpdateColumn("agree_num", gorm.Expr("agree_num - ?", 1))
 			if result.Error != nil || result.RowsAffected == 0 {
 				return EUpdateFailed
 			}
-			agree_count = tmp_comment[0].AgreeNum
-			result = tx.Model(&models.User{}).Where("id = ?", tmp_comment[0].UserId).UpdateColumn("agree_num", gorm.Expr("agree_num - ?", 1))
+			var tmp_comment models.Comment
+			result = tx.First(&tmp_comment, commentId)
+			if result.Error != nil {
+				return EUpdateFailed
+			}
+			//agree_count = tmp_comment[0].AgreeNum
+			//result = tx.Model(&models.User{}).Where("id = ?", tmp_comment[0].UserId).UpdateColumn("agree_num", gorm.Expr("agree_num - ?", 1))
+			agree_count = tmp_comment.AgreeNum
+			result = tx.Model(&models.User{}).Where("id = ?", tmp_comment.UserId).UpdateColumn("agree_num", gorm.Expr("agree_num - ?", 1))
 			if result.Error != nil {
 				return EUpdateFailed
 			}
