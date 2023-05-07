@@ -42,7 +42,7 @@ func QueryCommentbyId(ctx *gin.Context) {
 	response.ResponseSuccess(ctx, gin.H{
 		"id":         comment.ID,
 		"content":    comment.Content,
-		"link":       comment.LinkId,
+		"linkid":       comment.LinkId,
 		"createtime": comment.CreatedAt,
 		"user": gin.H{
 			"id":    user.ID,
