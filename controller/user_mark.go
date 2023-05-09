@@ -2,6 +2,7 @@ package controller
 
 import (
 	"kome/mybbs-server/dao"
+	"kome/mybbs-server/logic"
 	"kome/mybbs-server/response"
 	"strconv"
 
@@ -24,7 +25,7 @@ func QueryStarPost(ctx *gin.Context) {
 		show_num = 20
 	}
 
-	postList, err := dao.QueryStarPostList(egoId.(uint), int(offset_num), int(show_num))
+	postList, err := logic.UserStarPostList(egoId.(uint), int(offset_num), int(show_num))
 	if err != nil {
 		response.ResponseErrorWithMsg(ctx, response.CodeUnknownError, "star post list query failed")
 		return
@@ -49,7 +50,7 @@ func QueryStarComment(ctx *gin.Context) {
 		show_num = 20
 	}
 
-	commentList, err := dao.QueryStarCommentList(egoId.(uint), int(offset_num), int(show_num))
+	commentList, err := logic.UserStarCommentList(egoId.(uint), int(offset_num), int(show_num))
 	if err != nil {
 		response.ResponseErrorWithMsg(ctx, response.CodeUnknownError, "star comment list query failed")
 		return

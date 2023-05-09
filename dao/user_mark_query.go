@@ -25,7 +25,7 @@ func QueryStarCommentList(userId uint, offset_num int, show_num int) (comments [
 func CountStarPostbyUserId(userId uint) (count int64, err error) {
 	db := GetDatabase()
 	result := db.Model(&models.UserStarPost{}).Where("user_id = ?", userId).Count(&count)
-	if result != nil {
+	if result.Error != nil {
 		err = EQueryFailed
 		return
 	}
