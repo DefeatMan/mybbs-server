@@ -35,7 +35,7 @@ func CountStarPostbyUserId(userId uint) (count int64, err error) {
 func CountStarCommentbyUserId(userId uint) (count int64, err error) {
 	db := GetDatabase()
 	result := db.Model(&models.UserStarComment{}).Where("user_id = ?", userId).Count(&count)
-	if result != nil {
+	if result.Error != nil {
 		err = EQueryFailed
 		return
 	}

@@ -18,7 +18,7 @@ func QueryStarPost(ctx *gin.Context) {
 	showStr := ctx.Query("show")
 	offset_num, err := strconv.ParseInt(offsetStr, 10, 32)
 	if err != nil {
-		offset_num = 10
+		offset_num = 0
 	}
 	show_num, err := strconv.ParseInt(showStr, 10, 32)
 	if err != nil {
@@ -43,7 +43,7 @@ func QueryStarComment(ctx *gin.Context) {
 	showStr := ctx.Query("show")
 	offset_num, err := strconv.ParseInt(offsetStr, 10, 32)
 	if err != nil {
-		offset_num = 10
+		offset_num = 0
 	}
 	show_num, err := strconv.ParseInt(showStr, 10, 32)
 	if err != nil {

@@ -143,7 +143,7 @@ func ClickStarComment(userId uint, commentId uint) (star_count uint, now_state u
 	} else {
 		err = db.Transaction(func(tx *gorm.DB) error {
 			now_state = 1
-			if tx.Unscoped().Where("user_id = ? comment_id = ?", userId, commentId).Delete(&models.UserStarComment{}).Error != nil {
+			if tx.Unscoped().Where("user_id = ? AND comment_id = ?", userId, commentId).Delete(&models.UserStarComment{}).Error != nil {
 				return EDeleteFailed
 			}
 			//var tmp_comment []models.Comment
