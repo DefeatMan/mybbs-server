@@ -19,8 +19,8 @@ type Comment struct {
 	LinkId   uint   `gorm:"not null" json:"linkid" binding:"required"`
 	UserId   uint   `gorm:"not null" json:"userid"`
 	Content  string `gorm:"type:text;not null" json:"content" binding:"required"`
-	AgreeNum uint   `gorm:"not null; index:idx_postid_agreenum_createtime,priority:9,sort:desc"`
-	StarNum  uint   `gorm:"not null"`
+    AgreeNum uint   `gorm:"not null; index:idx_postid_agreenum_createtime,priority:9,sort:desc" json:"agree"`
+    StarNum  uint   `gorm:"not null" json:"star"`
 }
 
 // post form

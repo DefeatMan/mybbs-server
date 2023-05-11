@@ -1,10 +1,11 @@
 package logic
 
 import (
-	"github.com/gin-gonic/gin"
 	"kome/mybbs-server/dao"
 	"kome/mybbs-server/models"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func commentOnlyFill(comments []models.Comment) (commentData []*gin.H, count int) {
@@ -16,6 +17,8 @@ func commentOnlyFill(comments []models.Comment) (commentData []*gin.H, count int
 			"content":    comments[i].Content,
 			"linkid":     comments[i].LinkId,
 			"createtime": comments[i].CreatedAt,
+            "star":comments[i].StarNum,
+            "agree":comments[i].AgreeNum,
 			"user": &gin.H{
 				"id": comments[i].UserId,
 			},
@@ -33,6 +36,8 @@ func commentFill(comments []models.Comment, users []models.User) (commentData []
 			"content":    comments[i].Content,
 			"linkid":     comments[i].LinkId,
 			"createtime": comments[i].CreatedAt,
+            "star" : comments[i].StarNum,
+            "agree": comments[i].AgreeNum,
 			"user": &gin.H{
 				"id":    users[i].ID,
 				"name":  users[i].Name,

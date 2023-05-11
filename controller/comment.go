@@ -44,6 +44,8 @@ func QueryCommentbyId(ctx *gin.Context) {
 		"content":    comment.Content,
 		"linkid":       comment.LinkId,
 		"createtime": comment.CreatedAt,
+        "agree":comment.AgreeNum,
+        "star":comment.StarNum,
 		"user": gin.H{
 			"id":    user.ID,
 			"name":  user.Name,
